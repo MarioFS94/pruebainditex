@@ -1,0 +1,122 @@
+openapi: 3.0.3
+
+info:
+  title: Price service
+  version: 1.0.0
+  description: The e-commerce price service
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local server
+
+paths:
+  /products/{idProduct}/brands/{idBrand}:
+    get:
+      summary: This endpoint queries certain data in the price table
+      operationId: getProductData
+      parameters:
+        - name: idProduct
+          in: path
+          description: Product identifier
+          required: true
+          schema:
+            type: integer
+            default: 35455
+        - name: idBrand
+          in: path
+          description: Brand identifier
+          required: true
+          schema:
+            type: integer
+            default: 1
+        - name: applicationDate
+          in: query
+          description: Date application of the rate
+          required: true
+          schema:
+            type: string
+            default: 2020-06-14-00.00.00
+      responses:
+        200:
+          description: It's OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceResponseDTO'
+        404:
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: malformed url
+          content:
+            text/plain:
+              schema:
+                type: string
+        500:
+          description: internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          description: Unexpected error
+
+components:
+  schemas:
+    PriceRequestDto:
+      description: This is the request price model
+      type: object
+      required:
+        - productId
+        - brandId
+        - applicationDate
+      properties:
+        productId:
+          description: This is the product identifier
+          type: integer
+          minimum: 1
+        brandId:
+          description: This is the brand identifier
+          type: integer
+          minimum: 1
+        applicationDate:
+          description: This is the application date
+          type: string
+          example: 2020-06-14-15.00.00
+          minLength: 19
+
+    PriceResponseDTO:
+      description: This is the response price model
+      type: object
+      properties:
+        productId:
+          description: This is the product identifier
+          type: integer
+          minimum: 1
+        brandId:
+          description: This is the brand identifier
+          type: integer
+          minimum: 1
+        rate:
+          description: This is the rate
+          type: integer
+          example: 3
+          minimum: 1
+        startDate:
+          description: This is the rate starting date
+          type: string
+          example: 2020-06-14-15.00.00
+          minLength: 19
+        endDate:
+          description: This is the rate ending date
+          type: string
+          example: 2020-06-14-18.30.00
+          minLength: 19
+        pvp:
+          description: The final price
+          type: number
+          format: double
+          example: 31.95
