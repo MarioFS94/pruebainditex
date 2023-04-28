@@ -1,17 +1,22 @@
 package com.vermont.inditex.pruebamario.repository.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 
 @IdClass(ProductPK.class)
 @Entity
 @Table(name = "PRICES")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductEntity {
 
     @Id
@@ -27,10 +32,10 @@ public class ProductEntity {
     private Integer rate;
 
     @Column(name = "START_DATE")
-    private String startDate;
+    private Timestamp startDate;
 
     @Column(name = "END_DATE")
-    private String endDate;
+    private Timestamp endDate;
 
     @Column(name = "PRIORITY")
     private Integer priority;
